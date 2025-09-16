@@ -1,0 +1,60 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="2025-09-15-create-wishlist_applications-table" author="medvedev">
+        <createTable tableName="wishlist_applications">
+            <column name="id" type="uuid" remarks="Идентификатор">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_wishlist_applications"/>
+            </column>
+            <column name="user" type="VARCHAR" remarks="Пользователь, добавивший запись в таблицу">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visibility" type="VARCHAR" remarks="видимость">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_ins" type="timestamp" defaultValueComputed="current_timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_modif" type="timestamp" defaultValueComputed="current_timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2025-09-15-create-wishlist_items-table" author="medvedev">
+        <createTable tableName="wishlist_items">
+            <column name="id" type="uuid" remarks="Идентификатор">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_wishlist_items"/>
+            </column>
+            <column name="date_ins" type="timestamp" defaultValueComputed="current_timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_modif" type="timestamp" defaultValueComputed="current_timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR" remarks="Название желания">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR" remarks="Описание желания">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_deadline" type="timestamp" defaultValueComputed="current_timestamp" remarks="Дата исполнения">
+                <constraints nullable="true"/>
+            </column>
+            <column name="application_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2025-09-15-add-foreign-for-wishlist_items-table" author="vmedvedev">
+        <addForeignKeyConstraint baseColumnNames="application_id"
+                                 baseTableName="wishlist_items"
+                                 constraintName="wishlist_items_on_wishlist_applications_fk"
+                                 referencedColumnNames="id"
+                                 referencedTableName="wishlist_applications"/>
+    </changeSet>
+    <changeSet id="2025-09-15-create-idx_wishlist_applications_user" author="medvedev">
+        <createIndex tableName="wishlist_applications" indexName="idx_wishlist_applications_user">
+            <column name="user"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

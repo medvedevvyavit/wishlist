@@ -3,3 +3,19 @@ server:
 spring:
   application:
     name: wishlist
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: public
+  datasource:
+    url: jdbc:postgresql://localhost:5432/wishlist
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    changeLog: classpath:liquibase/db.changelog-master.xml
+    default-schema: public
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
